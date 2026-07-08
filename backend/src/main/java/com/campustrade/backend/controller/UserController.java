@@ -4,6 +4,7 @@ import com.campustrade.backend.entity.User;
 import com.campustrade.backend.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.campustrade.backend.common.Result;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class UserController {
     }
 
     @GetMapping("/user/list")
-    public List<User> list(){
-        return userService.list();
+    public Result<List<User>> list(){
+        return Result.success(userService.list());
     }
 }
