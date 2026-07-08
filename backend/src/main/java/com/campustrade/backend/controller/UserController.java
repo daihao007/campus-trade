@@ -5,6 +5,10 @@ import com.campustrade.backend.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.campustrade.backend.common.Result;
+import com.campustrade.backend.dto.UserRegisterDTO;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -19,5 +23,11 @@ public class UserController {
     @GetMapping("/user/list")
     public Result<List<User>> list(){
         return Result.success(userService.list());
+    }
+
+    @PostMapping("/user/register")
+    public Result<Void> register(@Valid @RequestBody UserRegisterDTO registerDTO){
+        userService.register(registerDTO);
+        return Result.success();
     }
 }
