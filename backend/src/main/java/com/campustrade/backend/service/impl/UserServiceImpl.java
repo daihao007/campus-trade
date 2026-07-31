@@ -6,9 +6,16 @@ import com.campustrade.backend.entity.User;
 import com.campustrade.backend.mapper.UserMapper;
 import com.campustrade.backend.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements UserService {
+    private final PasswordEncoder passwordEncoder;
+    
+    public UserServiceImpl(PasswordEncoder passwordEncoder){
+        this.passwordEncoder=passwordEncoder;
+    }
+    
     @Override
     public void register(UserRegisterDTO registerDTO){
         Long count = this.lambdaQuery()
@@ -17,9 +24,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         if (count>0) {
             throw new RuntimeException("用户名已存在");
         }
+
         User user = new User();
         user.setUsername(registerDTO.getUsername());
-        user.setPassword(registerDTO.getPassword());
+
+        String encodePassword=passwordEncoder.encode(registerDTO.getPassword());
+
+        user.setPassword(encodePassword);
         user.setNickname(registerDTO.getNickname());
         user.setRole(0);
 
