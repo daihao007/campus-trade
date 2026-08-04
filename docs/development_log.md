@@ -55,3 +55,10 @@ feat: initialize project structure
 - [ ] 配置 MyBatis-Plus
 - [ ] 连接 MySQL
 - [ ] 完成用户注册接口
+
+### 完成内容
+- [x] 引入Spring Security Crypto
+- [x] 配置 PasswordEncoder Bean
+- [x] 注册时使用 BCrypt 加密密码
+- [x] 数据库不再保存明文密码
+- [x] 完成密码加密测试

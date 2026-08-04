@@ -7,6 +7,7 @@ import com.campustrade.backend.mapper.UserMapper;
 import com.campustrade.backend.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import com.campustrade.backend.dto.UserLoginDTO;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements UserService {
@@ -35,5 +36,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         user.setRole(0);
 
         this.save(user);
+    }
+
+    @Override
+    public User login(UserLoginDTO loginDTO){
+        User user = this.lambdaQuery()
+                    .eq(User::getUsername,loginDTO.getUsername())
+                    .one();
+        if(user == null){
+            throw new RuntimeException("用户名或密码错误");
+        }
+
+        boolean passwordMatched = passwordEncoder.matches(loginDTO.getPassword(), user.getPassword());
+
+        if(!passwordMatched){
+            throw new RuntimeException("用户名或密码错误");
+        }
+
+        return user;
     }
 }
